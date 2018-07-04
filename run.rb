@@ -48,12 +48,17 @@ def detect_winner(player)
       @winner = player
     end
   end
+  if @filled_squares.count == 9
+    @winner = 'c'
+  end
 end
 
 draw
 while !@winner do
   if @active_player == 'o'
-    turn(@empty_squares.compact.sample, 'o')
+    similar_game_ids = @bot.similar_game_ids(@turn_data)
+    turn_position = @bot.project_winning_turn(similar_game_ids, 'o', @turn_number, @empty_squares.compact)
+    turn(turn_position, 'o')
   else
     turn(gets.chomp.to_i, "x")
   end
