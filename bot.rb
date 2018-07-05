@@ -74,17 +74,14 @@ class Bot
       results = @client.query(query)
       turn = results.first
       turn_position = turn['position'].to_i
-      puts "turn position #{turn_position}"
       query = "SELECT * from games WHERE game_id=#{game_id}"
       results = @client.query(query)
       game = results.first
-      puts "game is #{game}"
-      puts "winner was #{game['winner']}"
-      hash_key = player == game['winner'] ? 'wins' : 'losses'
-      d = position_data[turn_position]
-      puts d
-      d[hash_key] += 1
-      puts "position data #{position_data}"
+      if player == game['winner']
+        hash_key = 'wins'
+        d = position_data[turn_position]
+        d[hash_key] += 1
+      end
     end
     scores = []
     position_data.each do |position|
